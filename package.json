@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.9"
+  },
+  "name": "starpets.gg",
+  "version": "1.0.0",
+  "description": "",
+  "main": "/src/app.js",
+  "scripts": {
+    "start": "nodemon ./src/app.js",
+    "test_balance": "node ./tests/balance.test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
