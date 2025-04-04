@@ -8,16 +8,15 @@ class BalanceService {
      * @param {number} value Value to add to the user's balance.
      */
     static async updateUserBalance(userId, value) {
-        const user = await (async () => {
-            try {
-                return await User.findByPk(userId);
-            } catch (error) {
-                return false;
-            }
-        })();
-        
-        console.log(user);
-        
+        const user = await User.findByPk(userId);
+
+        if (!user) return { error: 'User not found' };
+
+        if (user.balance + value < 0) return { error: 'Balance cannot be negative' };
+
+        user.balance += value;
+        await user.save();
+        return { balance: user.balance };
     }
 }
 
