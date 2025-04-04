@@ -1,4 +1,4 @@
-const { User } = require('../database/database.js');
+const { sequelize, User } = require('../database/database.js');
 
 class BalanceService {
     
@@ -8,15 +8,23 @@ class BalanceService {
      * @param {number} value Value to add to the user's balance.
      */
     static async updateUserBalance(userId, value) {
-        const user = await User.findByPk(userId);
+        try {
+            const result = await sequelize.transaction(async (time) => {
+                const user = await User.findByPk(userId);
 
-        if (!user) return { error: 'User not found' };
+                if (!user) return { error: 'User not found' };
+                if (user.balance + value < 0) return { error: 'Balance cannot be negative' };
 
-        if (user.balance + value < 0) return { error: 'Balance cannot be negative' };
+                user.balance += value;
+                await user.save({ transaction: time });
 
-        user.balance += value;
-        await user.save();
-        return { balance: user.balance };
+                return { result: true, balance: user.balance };
+            });
+
+            return result;
+        } catch (error) {
+            return {result: false, error: error.message};
+        }
     }
 }
 
