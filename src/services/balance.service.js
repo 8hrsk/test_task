@@ -9,19 +9,32 @@ class BalanceService {
      */
     static async updateUserBalance(userId, value) {
         try {
-            const result = await sequelize.transaction(async (time) => {
-                const user = await User.findByPk(userId);
+            const [ result ] = await sequelize.query(`
+                    UPDATE "users"
+                    SET balance = balance + :value
+                    WHERE id = :userId AND (balance + :value) >= 0
+                    RETURNING *;
+                `, 
+                {
+                    replacements: {
+                        userId,
+                        value
+                    },
 
-                if (!user) return { error: 'User not found' };
-                if (user.balance + value < 0) return { error: 'Balance cannot be negative' };
-
-                user.balance += value;
-                await user.save({ transaction: time });
-
-                return { result: true, balance: user.balance };
+                    type: sequelize.QueryTypes.UPDATE
             });
 
-            return result;
+            if (result.length > 0) return {result: true, balance: result[0].balance};
+
+            const [ userCheck ] = await sequelize.query(`
+                SELECT id FROM "users" WHERE id = :userId;
+              `, {
+                replacements: { userId },
+                type: sequelize.QueryTypes.SELECT
+            });
+
+            if (userCheck.length === 0) return {result: false, error: 'User not found'};
+            return {result: false, error: 'Insufficient balance'};
         } catch (error) {
             return {result: false, error: error.message};
         }

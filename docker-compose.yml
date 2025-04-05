@@ -3,9 +3,11 @@ services:
     image: node:23-alpine
     container_name: app
     ports:
-      - ${APP_PORT}:3000
+      - ${APP_PORT}:${APP_PORT}
     volumes:
       - .:/usr/src/app
+    working_dir: /usr/src/app
+    command: npm run start
 
   postgres:
     image: postgres

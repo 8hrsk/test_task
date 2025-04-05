@@ -12,8 +12,7 @@
   "description": "",
   "main": "/src/app.js",
   "scripts": {
-    "start": "nodemon ./src/server.js",
-    "test_balance": "node ./tests/balance.test.js"
+    "start": "nodemon ./src/server.js"
   },
   "keywords": [],
   "author": "",

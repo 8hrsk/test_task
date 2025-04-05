@@ -4,14 +4,9 @@ URL='http://localhost:3001/balance/update'
 DATA='{"userId":1,"value":-2}'
 HEADERS='Content-Type: application/json'
 
-# Количество запросов
-TOTAL=100
+TOTAL=10000
 
-# Счётчики (опционально)
-SUCCESS=0
-FAILED=0
-
-echo "🚀 Отправляем $TOTAL запросов к $URL..."
+echo "Sending $TOTAL requests..."
 
 for i in $(seq 1 $TOTAL); do
   curl -s -X POST "$URL" \
@@ -19,7 +14,6 @@ for i in $(seq 1 $TOTAL); do
     -d "$DATA" &
 done
 
-# Ждём завершения всех фоновых запросов
 wait
 
-echo "✅ Все запросы отправлены."
+echo "All requests sent."

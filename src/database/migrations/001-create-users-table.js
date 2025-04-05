@@ -1,5 +1,3 @@
-const { types } = require("pg");
-
 module.exports = {
     async up({ context: queryInterface }) {
         await queryInterface.createTable('users', {
