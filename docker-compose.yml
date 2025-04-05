@@ -1,13 +1,9 @@
 services:
   app:
-    image: node:23-alpine
+    build: .
     container_name: app
     ports:
-      - ${APP_PORT}:${APP_PORT}
-    volumes:
-      - .:/usr/src/app
-    working_dir: /usr/src/app
-    command: npm run start
+      - ${APP_PORT}:3000
 
   postgres:
     image: postgres

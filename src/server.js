@@ -8,7 +8,7 @@ const { sequelize, umzug } = require('./database/database.js');
     await sequelize.authenticate();
     await umzug.up();
     
-    app.listen(process.env.APP_PORT, () => {
+    app.listen(3000, () => {
         console.log(`http://localhost:${process.env.APP_PORT}`);
     })
 })();

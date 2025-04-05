@@ -1,2 +1,7 @@
-/.git
-/node_modules
+.git
+node_modules
+pgdata
+docker-compose.yml
+.gitignore
+.env.example
+.dockerignore
